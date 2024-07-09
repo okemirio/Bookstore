@@ -75,7 +75,7 @@ export const About = () => {
             className="w-20 h-20 rounded-full mx-auto"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_8Cc-DUqt661ZPXbQg5vf_zE5AmjYxiSxFL_MZAZOKcAaRAUr"
             alt="John Doe"
-          />
+          t/>
           <div className="mt-3 my-3">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid
             iure accusamus fugit voluptate! Nesciunt modi praesentium nulla
@@ -429,8 +429,9 @@ export const About = () => {
           
         </div>
       </div>
-
+     
       <Footer />
+     
     </>
   );
 };

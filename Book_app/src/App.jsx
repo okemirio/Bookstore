@@ -13,6 +13,8 @@ import Shop from './Componets/Shop'
 import Contact from './Componets/Contact'
 import Search from './Componets/Search';
 import Cart from './Componets/Cart';
+import Checkout from './Componets/Checkout';
+import Order from './Componets/Order';
 
 const App = () => {
     //grab data from redux
@@ -41,6 +43,9 @@ const App = () => {
           <Route path='/contact'element={<Contact/>} />
           <Route path='/search'element={<Search/>} />
           <Route path='/cart'element={<Cart/>} />
+          <Route path='/checkout'element={<Checkout/>} />
+          <Route path='/orders'element={<Order/>} />
+
 
 
         </Routes>
