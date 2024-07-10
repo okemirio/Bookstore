@@ -15,7 +15,9 @@ import Search from './Componets/Search';
 import Cart from './Componets/Cart';
 import Checkout from './Componets/Checkout';
 import Order from './Componets/Order';
-
+import Dashboard from './Adim/Dashbord';
+import product from './Adim/Product';
+import Product from './Adim/Product';
 const App = () => {
     //grab data from redux
     const all_data_from_redux = useSelector(function (state) {
@@ -45,6 +47,8 @@ const App = () => {
           <Route path='/cart'element={<Cart/>} />
           <Route path='/checkout'element={<Checkout/>} />
           <Route path='/orders'element={<Order/>} />
+          <Route path='/dashboard' element={<Dashboard/>} />
+          <Route path='/products' element={<Product/>} />
 
 
 
