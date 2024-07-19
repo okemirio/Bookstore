@@ -18,7 +18,7 @@ const Login = () => {
               <button type="submit" className="w-10px  bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 " ><Link to="/home">Login Now</Link>
               
               </button>
-              <Link to='/dashboard'>Dashboard</Link>
+              <Link to='/admin/dashboard'>Dashboard</Link>
               </div>
             </form>
             <p className="mt-4 text-sm text-center">

@@ -12,19 +12,19 @@ const HeaderAdmin = () => {
         </div>
         <ul className="flex space-x-6">
           <li>
-            <Link to="/dashboard" className="hover:text-blue-500">Home</Link>
+            <Link to="/admin/dashboard" className="hover:text-blue-500">Home</Link>
           </li>
           <li>
-            <Link to="/products" className="hover:text-blue-500">Products</Link>
+            <Link to="/admin/products" className="hover:text-blue-500">Products</Link>
           </li>
           <li>
-            <Link to="/orders" className="hover:text-blue-500">Orders</Link>
+            <Link to="/admin/orders" className="hover:text-blue-500">Orders</Link>
           </li>
           <li>
-            <Link to="/users" className="hover:text-blue-500">Users</Link>
+            <Link to="/admin/users" className="hover:text-blue-500">Users</Link>
           </li>
           <li>
-            <Link to="/messages" className="hover:text-blue-500">Messages</Link>
+            <Link to="/admin/messages" className="hover:text-blue-500">Messages</Link>
           </li>
         </ul>
         <div className="flex items-center">
