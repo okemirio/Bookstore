@@ -21,8 +21,8 @@ export const ListedShop = () => {
             
           {/* Product 1 */}
           <div className=" border border-black p-7 rounded-lg shadow-lg">
-            <div className='relative bg-cover bg-no-repeat w-full h-64 font-bold' style={{ backgroundImage: `url(${Image1})` }}>
-                <h1 className='absolute top-[-10px] left-[-10px] bg-red-500 text-white p-2 rounded-md'>$50/-</h1>
+            <div className='relative bg-cover bg-no-repeat w-full h-96 font-bold' style={{ backgroundImage: `url(${Image1})` }}>
+                <h1 className='absolute top-[-10px] left-[-10px] bg-red-500 text-white p-2 rounded-md'>$500/-</h1>
               {/* Empty div to create space for image */}
             </div>
 
@@ -35,8 +35,8 @@ export const ListedShop = () => {
 
           {/* Repeat for more products */}
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className=' bg-cover bg-no-repeat w-full h-64' style={{ backgroundImage: `url(${Image2})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$20/-</h1>
+            <div className=' bg-cover bg-no-repeat w-full h-96' style={{ backgroundImage: `url(${Image2})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$200/-</h1>
               {/* Empty div to create space for image */}
             </div>
             <div className='mt-4'>
@@ -47,8 +47,8 @@ export const ListedShop = () => {
           </div>
 
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className='bg-cover bg-no-repeat w-full h-64' style={{ backgroundImage: `url(${Image3})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$16/-</h1>
+            <div className='bg-cover bg-no-repeat w-full h-96' style={{ backgroundImage: `url(${Image3})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$160/-</h1>
 
               {/* Empty div to create space for image */}
             </div>
@@ -61,8 +61,8 @@ export const ListedShop = () => {
 
           
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className='bg-cover bg-no-repeat w-full h-64' style={{ backgroundImage: `url(${Image4})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$12/-</h1>
+            <div className='bg-cover bg-no-repeat w-full h-96' style={{ backgroundImage: `url(${Image4})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$120/-</h1>
 
               {/* Empty div to create space for image */}
             </div>
@@ -76,8 +76,8 @@ export const ListedShop = () => {
 
           
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className='bg-cover bg-no-repeat w-full h-64' style={{ backgroundImage: `url(${Image5})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$16/-</h1>
+            <div className='bg-cover bg-no-repeat w-full h-96' style={{ backgroundImage: `url(${Image5})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$160/-</h1>
 
               {/* Empty div to create space for image */}
             </div>
@@ -91,8 +91,8 @@ export const ListedShop = () => {
 
           
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className='bg-cover bg-no-repeat w-full h-64 text-center' style={{ backgroundImage: `url(${Image6})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$16/-</h1>
+            <div className='bg-cover bg-no-repeat w-full h-96 text-center' style={{ backgroundImage: `url(${Image6})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$160/-</h1>
 
               {/* Empty div to create space for image */}
             </div>
@@ -104,8 +104,8 @@ export const ListedShop = () => {
           </div>
 
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className='bg-cover bg-no-repeat w-full h-64 text-center' style={{ backgroundImage: `url(${Image7})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$16/-</h1>
+            <div className='bg-cover bg-no-repeat w-full h-96 text-center' style={{ backgroundImage: `url(${Image7})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$160/-</h1>
 
               {/* Empty div to create space for image */}
             </div>
@@ -120,8 +120,8 @@ export const ListedShop = () => {
 
 
           <div className="relative border border-black p-7 rounded-lg shadow-lg">
-            <div className='bg-cover bg-no-repeat w-full h-64 text-center' style={{ backgroundImage: `url(${Image8})` }}>
-            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$16/-</h1>
+            <div className='bg-cover bg-no-repeat w-full h-96 text-center' style={{ backgroundImage: `url(${Image8})` }}>
+            <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>$160/-</h1>
 
               {/* Empty div to create space for image */}
             </div>

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
   <Header/>
   <ListedCart/>
   
-    <h2 className='border border-black p-2 mx-96 my-3 text-red-400 text-center font-bold'> 
+    <h2 className='border border-black p-2 mx-96 my-10 text-red-400 text-center font-bold'> 
         Your cart is empty
     </h2>
   

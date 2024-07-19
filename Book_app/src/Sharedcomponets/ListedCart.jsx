@@ -14,7 +14,7 @@ export const ListedCart = () => {
           {/* Product 1 */}
           <div className=" border border-black p-7 rounded-lg shadow-lg">
             <div
-              className="relative bg-cover bg-no-repeat w-full h-64 font-bold"
+              className="relative bg-cover bg-no-repeat w-full h-96 font-bold"
               style={{ backgroundImage: `url(${Image1})` }}
             >
               <h1 className="absolute top-[-10px] right-[-10px] bg-red-500 text-white p-2 rounded cursor-pointer">
@@ -29,14 +29,14 @@ export const ListedCart = () => {
               The World of Art
             </h3>
 
-            <div className="mt-4 flex">
+            <div className="mt-4 flex gap-1">
               <input
                 type="number"
                 value={1}
                 name="quantity"
                 className="border border-gray-300 rounded-md p-2 mb-2 w-full"
               />
-              <button className="bg-yellow-600 text-white p-2 rounded-md w-full">
+              <button className="bg-yellow-600 text-white p-2 rounded-md w-full h-10">
                 Update
               </button>
             </div>

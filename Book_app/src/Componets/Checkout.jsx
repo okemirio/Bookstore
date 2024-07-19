@@ -37,10 +37,10 @@ export const Checkout = () => {
         </h1>
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-10">
-  <form className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg grid grid-cols-2 gap-4 ">
-    <h1 className="text-2xl font-bold mb-10 col-span-2 text-center">Place Your Order</h1>
+  <form className="w-[1000px] bg-white p-8 rounded-lg shadow-lg grid grid-cols-2 gap-4 ">
+    <h1 className="text-2xl font-bold mb-6 col-span-2 text-center">Place Your Order</h1>
 
-    <div className="mb-6">
+    <div className="mb-6 ">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
         Your name:
       </label>
