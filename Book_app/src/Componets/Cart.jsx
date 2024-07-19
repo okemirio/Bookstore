@@ -13,10 +13,12 @@ import { Link } from 'react-router-dom';
     <h2 className='border border-black p-2 mx-96 my-10 text-red-400 text-center font-bold'> 
         Your cart is empty
     </h2>
-  
+<div className='flex justify-center '>
+<button className='bg-black p-2 rounded text-white hover:bg-blue-600'>Delete All</button>
+
+</div>
 <div className='border border-black my-6 py-4 mx-28'> 
 <div className=' text-white font-medium text-center  '>
-        <button className='bg-black p-2 rounded'>Delete All</button>
       </div>
       <div className='flex flex-col items-center m-4 '>
         <h1>

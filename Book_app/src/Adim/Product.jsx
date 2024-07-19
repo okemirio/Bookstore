@@ -1,6 +1,6 @@
 import React from 'react';
 import HeaderAdmin from './HeaderAdmin';
-
+import ListedAdminProduct from '../Sharedcomponets/ListedAdminProduct';
 const Product = () => {
   return (
     <div className="min-h-screen bg-gray-100">
@@ -45,7 +45,7 @@ const Product = () => {
           </button>
         </form>
       </div>
-      
+      <ListedAdminProduct/>
     </div>
   );
 }
