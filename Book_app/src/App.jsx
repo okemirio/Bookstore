@@ -20,7 +20,11 @@ import Product from './Adim/Product';
 import Orders from './Adim/Orders';
 import User from './Adim/User';
 import Messages from './Adim/Messages';
+
+
+
 const App = () => {
+  
     //grab data from redux
     const all_data_from_redux = useSelector(function (state) {
       return state.productStoreReducer;
@@ -35,6 +39,8 @@ const App = () => {
       dispatch(post_product(all_products));
     },[]); //empty bbracket - or dpeendency - indicate one time call
   
+    
+    
   return (
     <React.Fragment>
       <BrowserRouter>

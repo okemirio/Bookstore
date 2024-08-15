@@ -14,6 +14,8 @@ import { FaLinkedin } from "react-icons/fa";
 import "./style.css";
 
 export const About = () => {
+
+  
   return (
     <>
       <Header />

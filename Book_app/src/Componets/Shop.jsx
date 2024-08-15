@@ -1,12 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; 
+import React, { useEffect, useState } from 'react';
+import { Link} from 'react-router-dom'; 
 import Header from '../Sharedcomponets/Header';
 import Aimage1 from '../../public/images/heading-bg.webp';
 import ListedProducts from '../Sharedcomponets/ListedProducts';
 import Footer from '../Sharedcomponets/Footer';
 import ListedShop from '../Sharedcomponets/ListedShop';
+import axios from 'axios'
+
 
 const Shop = () => {
+
+
   return (
     <div>
       <Header />
