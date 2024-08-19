@@ -30,7 +30,7 @@ const ListedCart = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "http://localhost:5000/carts/cart/read",
+          "https://bookkapp-backend.vercel.app/carts/cart/read",
           {
             headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
           }
@@ -86,7 +86,7 @@ const ListedCart = () => {
   
     try {
       await axios.put(
-        `http://localhost:5000/carts/cart/update/${productId}`,
+        `https://bookkapp-backend.vercel.app/carts/cart/update/${productId}`,
         { quantity: newQuantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -105,7 +105,7 @@ const ListedCart = () => {
     if (!isTokenValid()) return;
 
     try {
-      await axios.delete(`http://localhost:5000/carts/cart/${productId}`, {
+      await axios.delete(`https://bookkapp-backend.vercel.app/carts/cart/${productId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
       });
       setItems(items.filter((item) => item._id !== productId));
@@ -123,7 +123,7 @@ const ListedCart = () => {
     if (!isTokenValid()) return;
 
     try {
-      await axios.delete("http://localhost:5000/carts/cart", {
+      await axios.delete("https://bookkapp-backend.vercel.app/carts/cart", {
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
       });
       setItems([]);

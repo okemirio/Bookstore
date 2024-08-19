@@ -47,7 +47,7 @@ const Checkout = () => {
       const fetchCartItems = async () => {
         setIsLoading(true);
         try {
-          const response = await axios.get('http://localhost:5000/carts/cart/read', {
+          const response = await axios.get('https://bookkapp-backend.vercel.app/carts/cart/read', {
             headers: { Authorization: `Bearer ${token}` },
           });
 
@@ -95,7 +95,7 @@ const Checkout = () => {
     if (token) {
       try {
         const response = await axios.post(
-          'http://localhost:5000/orders/checkout',
+          'https://bookkapp-backend.vercel.app/orders/checkout',
           { ...formData, total: grandTotal },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -117,41 +117,41 @@ const Checkout = () => {
         className="bg-cover bg-no-repeat w-full h-64 mt-28"
         style={{ backgroundImage: `url(${Aimage1})` }}
       >
-        <div className="flex flex-col items-center justify-center h-full">
-          <h1 className="text-black text-3xl font-extrabold">CHECKOUT</h1>
-          <div className="flex gap-2">
-            <Link className="text-blue-600 text-xl" to="/home">
+        <div className="flex flex-col items-center justify-center h-full text-white">
+          <h1 className="text-3xl font-extrabold md:text-4xl">CHECKOUT</h1>
+          <div className="flex gap-2 mt-2">
+            <Link className="text-blue-300 text-lg md:text-xl" to="/home">
               home/
             </Link>
-            <Link className="text-xl" to="/checkout">
+            <Link className="text-lg md:text-xl" to="/checkout">
               checkout
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center py-8">
-  <div className="border border-gray-300 my-5 p-4 bg-white shadow-lg rounded-lg w-full max-w-md">
-    <h1 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-      Your Items
-    </h1>
-    <div className="space-y-2">
-      {items.map(item => (
-        <div key={item._id} className="flex justify-between text-gray-700">
-          <span>{item.productId.name}</span>
-          <span>(${item.productId.price} x {item.quantity || 1})</span>
+      <div className="flex flex-col items-center justify-center py-8 px-4">
+        <div className="border border-gray-300 my-5 p-4 bg-white shadow-lg rounded-lg w-full max-w-md">
+          <h1 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+            Your Items
+          </h1>
+          <div className="space-y-2">
+            {items.map(item => (
+              <div key={item._id} className="flex justify-between text-gray-700">
+                <span className="text-sm md:text-base">{item.productId.name}</span>
+                <span className="text-sm md:text-base">(${item.productId.price} x {item.quantity || 1})</span>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+      </div>
 
-      <div>
-        <h1 className="text-center font-bold">
-          Subtotal: <span className="text-red-500 font-bold my-4">${subtotal.toFixed(2)}</span>
+      <div className="text-center mb-8">
+        <h1 className="text-lg md:text-xl font-bold">
+          Subtotal: <span className="text-red-500 font-bold">${subtotal.toFixed(2)}</span>
         </h1>
-        <h1 className="text-center font-bold">
-          Grand TOTAL: <span className="text-red-500 font-bold my-4">${grandTotal.toFixed(2)}</span>
+        <h1 className="text-lg md:text-xl font-bold">
+          Grand TOTAL: <span className="text-red-500 font-bold">${grandTotal.toFixed(2)}</span>
         </h1>
       </div>
 
@@ -161,15 +161,15 @@ const Checkout = () => {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-10">
         <form
           onSubmit={handleSubmit}
-          className="w-4/5 max-w-[1000px] mx-auto bg-white p-8 rounded-lg shadow-lg grid gap-6"
+          className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg grid gap-6 mx-4 sm:mx-8"
         >
           <h1 className="text-2xl font-bold mb-6 text-center col-span-2">
             Place Your Order
           </h1>
 
-          <div className="grid grid-cols-2 gap-4 col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-2">
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="name" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Name
               </label>
               <input
@@ -182,7 +182,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="number" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="number" className="block text-sm font-medium text-gray-700">
                 Phone Number
               </label>
               <input
@@ -197,7 +197,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="email" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
@@ -210,7 +210,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="address1" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="address1" className="block text-sm font-medium text-gray-700">
                 Address Line 1
               </label>
               <input
@@ -223,7 +223,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="address2" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="address2" className="block text-sm font-medium text-gray-700">
                 Address Line 2
               </label>
               <input
@@ -235,7 +235,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="city" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                 City
               </label>
               <input
@@ -248,7 +248,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="state" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="state" className="block text-sm font-medium text-gray-700">
                 State
               </label>
               <input
@@ -261,7 +261,7 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="country" className="block text-ms font-medium text-gray-700">
+              <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                 Country
               </label>
               <input
@@ -274,20 +274,23 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="pincode" className="block text-ms font-medium text-gray-700">
-                Pin Code
+              <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
+                Pincode
               </label>
               <input
                 type="text"
                 id="pincode"
                 value={formData.pincode}
                 onChange={handleChange}
+                pattern="\d{6}"
+                title="Pincode should be exactly 6 digits"
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 required
               />
             </div>
-            <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="payment" className="block text-ms font-medium text-gray-700">
+
+            <div className="col-span-2">
+              <label htmlFor="payment" className="block text-sm font-medium text-gray-700">
                 Payment Method
               </label>
               <select
@@ -295,21 +298,23 @@ const Checkout = () => {
                 value={formData.payment}
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
               >
                 <option value="Cash on delivery">Cash on delivery</option>
-                <option value="Online payment">Online payment</option>
-                <option value="Credit/Debit card">Credit/Debit card</option>
-                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Credit card">Credit card</option>
+                <option value="PayPal">PayPal</option>
               </select>
             </div>
-          </div>
 
-          <button
-            type="submit"
-            className="col-span-2 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
-          >
-            Place Order
-          </button>
+            <div className="col-span-2">
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Place Order
+              </button>
+            </div>
+          </div>
         </form>
       </div>
 

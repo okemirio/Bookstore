@@ -8,6 +8,7 @@ const ListedProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(6);
+  const [addedToCart, setAddedToCart] = useState({}); // Track which products are added
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const ListedProducts = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/products/products', {
+        const response = await axios.get('https://bookkapp-backend.vercel.app/products/products', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -61,8 +62,14 @@ const ListedProducts = () => {
       return;
     }
 
+    // Immediately update the UI to reflect the addition to the cart
+    setAddedToCart((prevState) => ({
+      ...prevState,
+      [product._id]: true,
+    }));
+
     try {
-      const response = await axios.post('http://localhost:5000/carts/cart/add',
+      const response = await axios.post('https://bookkapp-backend.vercel.app/carts/cart/add',
         { productId: product._id, quantity: 1 },
         {
           headers: {
@@ -96,21 +103,30 @@ const ListedProducts = () => {
       <div className="mt-8">
         <h1 className="text-2xl font-bold mb-4 text-center">LATEST PRODUCTS</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-center mx-40">
-          {products.slice(0, visibleProducts).map((product, index) => (
-            <div key={index} className="relative border border-black p-7 rounded-lg shadow-lg">
-              <div
-                className='relative bg-cover bg-no-repeat w-full h-96 font-bold'
-                style={{ backgroundImage: `url(${product.image})` }}
-              >
-                <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>{product.price}/-</h1>
+          {products.slice(0, visibleProducts).map((product, index) => {
+            const isInCart = addedToCart[product._id] || cart.some(item => item.productId === product._id);
+            return (
+              <div key={index} className="relative border border-black p-7 rounded-lg shadow-lg">
+                <div
+                  className='relative bg-cover bg-no-repeat w-full h-96 font-bold'
+                  style={{ backgroundImage: `url(${product.image})` }}
+                >
+                  <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>{product.price}/-</h1>
+                </div>
+                <div className='mt-4'>
+                  <h3 className="text-lg font-semibold mb-2 text-center">{product.name}</h3>
+                  <input type="number" defaultValue={1} name="quantity" className="border border-gray-300 rounded-md p-2 mb-2 w-full" />
+                  <button
+                    className={`${isInCart ? 'bg-green-600' : 'bg-blue-600'} text-white p-2 rounded-md w-full`}
+                    onClick={() => !isInCart && addToCart(product)}
+                    disabled={isInCart} // Prevent multiple clicks
+                  >
+                    {isInCart ? 'Already in cart' : 'Add to Cart'}
+                  </button>
+                </div>
               </div>
-              <div className='mt-4'>
-                <h3 className="text-lg font-semibold mb-2 text-center">{product.name}</h3>
-                <input type="number" defaultValue={1} name="quantity" className="border border-gray-300 rounded-md p-2 mb-2 w-full" />
-                <button className="bg-blue-600 text-white p-2 rounded-md w-full" onClick={() => addToCart(product)}>Add to Cart</button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

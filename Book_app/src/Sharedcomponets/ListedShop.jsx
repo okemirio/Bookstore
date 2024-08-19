@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Product from './products'; // Assuming your product component is named 'Product'
+import Product from './products'; 
 import { useNavigate } from 'react-router-dom';
 
 export const ListedShop = () => {
@@ -9,6 +9,7 @@ export const ListedShop = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(6); // State for managing visible products
+  const [addedToCart, setAddedToCart] = useState({}); // Track which products are added
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export const ListedShop = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/products/products', {
+        const response = await axios.get('https://bookkapp-backend.vercel.app/products/products', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,7 +65,7 @@ export const ListedShop = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/carts/cart/add',
+      const response = await axios.post('https://bookkapp-backend.vercel.app/carts/cart/add',
         { productId: product._id, quantity: product.quantity },
         {
           headers: {
@@ -75,6 +76,12 @@ export const ListedShop = () => {
 
       console.log(response);
       setCart((prevCart) => [...prevCart, response.data]);
+
+      // Immediately update the UI to reflect the addition to the cart
+      setAddedToCart((prevState) => ({
+        ...prevState,
+        [product._id]: true,
+      }));
     } catch (error) {
       console.error('Error adding to cart:', error);
       if (error.response && error.response.status === 401) {
@@ -99,7 +106,12 @@ export const ListedShop = () => {
         <h1 className="text-2xl font-bold mb-4 text-center">LATEST PRODUCTS</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-center mx-40">
           {products.slice(0, visibleProducts).map((product, index) => (
-            <Product key={index} data={product} addToCart={addToCart} />
+            <Product
+              key={index}
+              data={product}
+              addToCart={addToCart}
+              isAdded={!!addedToCart[product._id]}
+            />
           ))}
         </div>
       </div>

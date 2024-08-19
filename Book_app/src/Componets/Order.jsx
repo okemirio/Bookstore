@@ -4,6 +4,7 @@ import Header from '../Sharedcomponets/Header';
 import Aimage1 from '../../public/images/heading-bg.webp';
 import { Link } from 'react-router-dom';
 import Footer from '../Sharedcomponets/Footer';
+import { AiOutlineDoubleRight } from "react-icons/ai";
 import axios from 'axios';
 
 const Orders = () => {
@@ -32,7 +33,7 @@ const Orders = () => {
 
       if (token) {
         try {
-          const response = await axios.get('http://localhost:5000/orders/orders', {
+          const response = await axios.get('https://bookkapp-backend.vercel.app/orders/orders', {
             headers: { Authorization: `Bearer ${token}` }
           });
           setOrders(response.data);
@@ -128,6 +129,23 @@ const Orders = () => {
         ) : (
           <p>No orders found.</p>
         )}
+      </div>
+
+      <div className="flex justify-center my-10">
+        <button
+          className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 text-sm sm:text-base md:text-lg lg:text-xl"
+          onClick={() => navigate('/checkout')}
+        >
+         <div className='flex items-center'>
+         <div>
+         Checkout 
+         </div>
+         <div className='flex items-center'>
+          <AiOutlineDoubleRight />
+          <AiOutlineDoubleRight />
+         </div>
+         </div>
+        </button>
       </div>
 
       <Footer />

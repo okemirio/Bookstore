@@ -39,7 +39,7 @@ const Register = () => {
     }
 
     setError('');
-    axios.post('http://localhost:5000/auth/register', register)
+    axios.post('https://bookkapp-backend.vercel.app/auth/register', register)
       .then((response) => {
         setSuccess('Registration successful. Please log in.');
         alert('Registration successful. Please log in.');
