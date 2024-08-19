@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   server: {
-    port: 'https://bookkapp-backend.vercel.app', // specify the port here
+    port: '3000', // specify the port here
   },
   plugins: [react()],
   build: {
