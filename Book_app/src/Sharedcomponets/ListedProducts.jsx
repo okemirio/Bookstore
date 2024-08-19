@@ -86,7 +86,7 @@ const ListedProducts = () => {
         alert('Session expired. Please log in again.');
         localStorage.removeItem('authToken');
         localStorage.removeItem('expirationTime');
-        navigate('/login');
+        navigate('/');
       }
     }
   };
