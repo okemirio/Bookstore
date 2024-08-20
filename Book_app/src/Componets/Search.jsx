@@ -7,21 +7,7 @@ import Footer from "../Sharedcomponets/Footer";
 const Search = () => {
   return (
 <div className="flex flex-col min-h-screen">
-  <Header />
-  <div className="flex-grow relative">
-    <div
-      className="bg-cover bg-no-repeat w-full h-64 sm:h-48 md:h-64 lg:h-80 mt-28"
-      style={{ backgroundImage: `url(${Aimage1})` }}
-    >
-      <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-black text-3xl font-extrabold sm:text-2xl md:text-3xl lg:text-4xl">ABOUT US</h1>
-        <div className="flex gap-2 text-xl sm:text-lg md:text-xl">
-          <Link className="text-blue-600" to="/home">home/</Link>
-          <Link to="/search">Search</Link>
-        </div>
-      </div>
-    </div>
-  </div>      <Header />
+       <Header />
       <div className="relative w-full mt-28">
         <div
           className="bg-cover bg-no-repeat w-full h-64"

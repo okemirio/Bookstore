@@ -121,7 +121,7 @@ const Header = () => {
       </div>
 
       {/* Responsive side menu for small screens */}
-      <div className={`md:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
+      <div className={`md:hidden fixed top-0 left-0 h-96 w-64 bg-white shadow-lg transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
         <div className='p-4'>
           <button onClick={toggleMenu} className='mb-4'>
             <FaBars className='text-2xl' />

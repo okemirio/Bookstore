@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[400px] bg-cover bg-center" style={{ backgroundImage: `url(${Image})` }}>
+      <div className="relative h-[500px] bg-cover bg-center " style={{ backgroundImage: `url(${Image})` }}>
         <div className="absolute inset-0 bg-black opacity-50"></div> {/* Dark overlay */}
         <div className="relative z-10 flex flex-col m-20 items-center justify-center h-full text-white font-bold text-5xl text-center gap-5">
           <h1>HAND PICKED BOOK</h1>
