@@ -5,93 +5,101 @@ import { IoPerson } from 'react-icons/io5';
 import axios from 'axios';
 
 const Header = () => {
-  const [isHovered, setIsHovered] = useState(false); // State to track if the user is hovering over the person icon
-  const [user, setUser] = useState(null); // State to store the fetched user information
-  const [error, setError] = useState(null); // State to store any errors during the user fetch
-  const [cartCount, setCartCount] = useState(0); // State to store the number of items in the cart
+  const [isHovered, setIsHovered] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Effect to fetch user info when the person icon is hovered
   useEffect(() => {
     if (isHovered && !user) {
       fetchUserInfo();
     }
   }, [isHovered, user]);
 
-  // Effect to fetch cart count when the component mounts and set up an event listener for cart updates
   useEffect(() => {
-    fetchCartCount(); // Fetch cart count initially
-
-    // Set up an event listener for the custom 'cartUpdated' event
+    fetchCartCount();
     const handleCartUpdate = () => fetchCartCount();
     window.addEventListener('cartUpdated', handleCartUpdate);
-
-    // Clean up the event listener when the component unmounts
     return () => window.removeEventListener('cartUpdated', handleCartUpdate);
   }, []);
 
-  // Function to fetch user information
   const fetchUserInfo = async () => {
     try {
-      const token = localStorage.getItem('authToken'); // Get the auth token from local storage
+      const token = localStorage.getItem('authToken');
       const response = await axios.get('https://bookkapp-backend.vercel.app/auth/userinfo', {
-        headers: { Authorization: `Bearer ${token}` }, // Pass the token in the request header
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setUser(response.data); // Update user state with fetched data
-      setError(null); // Clear any existing errors
+      setUser(response.data);
+      setError(null);
     } catch (error) {
       console.error('Error fetching user info:', error);
-      setError('Failed to fetch user info.'); // Set error message if fetch fails
+      setError('Failed to fetch user info.');
     }
   };
 
-  // Function to fetch the cart count
   const fetchCartCount = async () => {
     try {
-      const token = localStorage.getItem('authToken'); // Get the auth token from local storage
+      const token = localStorage.getItem('authToken');
       const response = await axios.get('https://bookkapp-backend.vercel.app/carts/cart/read', {
-        headers: { Authorization: `Bearer ${token}` }, // Pass the token in the request header
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setCartCount(response.data.cart.length); // Update the cart count state
+      setCartCount(response.data.cart.length);
     } catch (error) {
       console.error('Error fetching cart count:', error);
     }
   };
 
   return (
-    <div className='fixed top-0 left-0 w-full z-50 shadow-md'>
-      <div className='bg-gray-100 p-4 flex justify-between items-center'>
+    <div className='fixed top-0 left-0 w-full z-50 shadow-md bg-white'>
+      {/* Top Bar */}
+      <div className='bg-gray-100 p-4 flex justify-between items-center px-20'>
         <div className='flex items-center space-x-2'>
-          {/* Social media icons */}
-          <a href="https://www.facebook.com"><FaFacebookF className='text-black text-sm' /></a>
-          <a href="https://twitter.com/"><FaTwitter className='text-black text-sm' /></a>
-          <a href="https://www.instagram.com/"><FaInstagram className='text-black text-sm' /></a>
-          <a href="https://www.linkedin.com/"><FaLinkedin className='text-black text-sm' /></a>
+          <a href="https://www.facebook.com" aria-label="Facebook"><FaFacebookF className='text-black text-sm' /></a>
+          <a href="https://twitter.com/" aria-label="Twitter"><FaTwitter className='text-black text-sm' /></a>
+          <a href="https://www.instagram.com/" aria-label="Instagram"><FaInstagram className='text-black text-sm' /></a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn"><FaLinkedin className='text-black text-sm' /></a>
         </div>
-
         <div className='space-x-2 md:space-x-4'>
-          {/* Login and Register links */}
           <Link to="/" className='text-blue-600 hover:underline'><span className='text-black'>New</span> login |</Link>
           <Link to="/register" className='text-blue-600 hover:underline'>register</Link>
         </div>
       </div>
 
-      <div className='bg-white p-4 flex flex-col md:flex-row items-center justify-between'>
-        {/* Logo */}
+      {/* Main Navigation */}
+      <div className='bg-white p-4 flex items-center justify-between px-20'>
         <div className='text-blue-600 text-lg font-bold'>
           <h2>Bookly.</h2>
         </div>
-        {/* Navigation links */}
-        <nav className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-8 font-bold'>
-          <Link to="/home" className='hover:text-blue-600'>Home</Link>
-          <Link to="/about" className='hover:text-blue-600'>About</Link>
-          <Link to="/contact" className='hover:text-blue-600'>Contact</Link>
-          <Link to="/shop" className='hover:text-blue-600'>Shop</Link>
-          <Link to="/orders" className='hover:text-blue-600'>Orders</Link>
+
+        {/* Toggle Button for Mobile */}
+        <button onClick={() => setMenuOpen(!menuOpen)} className='md:hidden text-xl focus:outline-none'>
+          {menuOpen ? '✕' : '☰'}
+        </button>
+
+        {/* Navigation Links */}
+        <nav
+          className={`md:flex md:items-center md:space-x-8 absolute md:static bg-white md:bg-transparent top-0 left-0 w-full md:w-auto transition-transform transform ${
+            menuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+          } md:transition-none shadow-lg md:shadow-none p-8 md:p-0`}
+        >
+          <div className='md:hidden mb-4'>
+            <input
+              type='text'
+              placeholder='Search...'
+              className='w-full p-2 border border-gray-300 rounded'
+            />
+          </div>
+          <Link to="/home" className='block p-4 text-center hover:text-blue-600 border-b md:border-none'>Home</Link>
+          <Link to="/about" className='block p-4 text-center hover:text-blue-600 border-b md:border-none'>About</Link>
+          <Link to="/contact" className='block p-4 text-center hover:text-blue-600 border-b md:border-none'>Contact</Link>
+          <Link to="/shop" className='block p-4 text-center hover:text-blue-600 border-b md:border-none'>Shop</Link>
+          <Link to="/orders" className='block p-4 text-center hover:text-blue-600'>Orders</Link>
         </nav>
-        {/* User actions */}
+
+        {/* User and Cart Icons */}
         <div className='flex items-center space-x-4'>
           <Link to="/search"><FaSearch className='hover:text-blue-600' /></Link>
-          {/* Person icon with user info on hover */}
           <div
             className='relative'
             onMouseEnter={() => setIsHovered(true)}
@@ -113,11 +121,10 @@ const Header = () => {
               </div>
             )}
           </div>
-          {/* Shopping cart icon with cart count */}
           <Link to="/cart" className='relative'>
             <FaShoppingCart className='hover:text-blue-600' />
             <span className='absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center'>
-              {cartCount} {/* Display the cart count */}
+              {cartCount}
             </span>
           </Link>
         </div>
@@ -137,6 +144,7 @@ const styles = {
     borderRadius: '5px',
     zIndex: 1,
     textAlign: 'left',
+    minWidth: '150px', // Ensure minimum width for mobile
   },
 };
 
