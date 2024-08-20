@@ -14,52 +14,52 @@ export const About = () => {
     <>
       <Header />
       <div className="relative">
-        <div
-          className="bg-cover bg-no-repeat w-full h-64 mt-28"
-          style={{ backgroundImage: `url(${Aimage1})` }}
-        >
-          <div className="flex flex-col items-center justify-center h-full">
-            <h1 className="text-black text-3xl font-extrabold">ABOUT US</h1>
-            <div className="flex gap-2">
-              <Link className="text-blue-600 text-xl" to="/home">
-                home/
-              </Link>
-              <Link className="text-xl" to="/about">
-                about
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-center items-center mt-10">
-          <div className="w-1/2 m-1">
-            <img
-              className="w-full h-96 rounded-lg shadow-lg"
-              src={AImage2}
-              alt="Description of image"
-            />
-          </div>
-          <div className="w-[40%] bg-slate-300 p-10 rounded-lg shadow-lg">
-            <h1 className="font-extrabold text-2xl mb-4">WHY CHOOSE US?</h1>
-            <p className="mb-2">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga rem
-              pariatur dicta eaque exercitationem. Hic explicabo nihil aperiam
-              labore debitis?
-            </p>
-            <p className="mb-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
-              voluptatibus delectus consequuntur, facilis ipsum repellat? Magnam
-              atque ullam nesciunt nostrum? Lorem ipsum dolor sit.KI
-            </p>
-            <Link
-              to="/contact"
-              className="bg-blue-600 text-white p-2 rounded-md mt-8 inline-block hover:bg-black"
-            >
-              CONTACT US
-            </Link>
-          </div>
-        </div>
+  <div
+    className="bg-cover bg-no-repeat w-full h-64 mt-28"
+    style={{ backgroundImage: `url(${Aimage1})` }}
+  >
+    <div className="flex flex-col items-center justify-center h-full text-center px-4">
+      <h1 className="text-black text-3xl font-extrabold">ABOUT US</h1>
+      <div className="flex flex-col sm:flex-row gap-2 mt-4">
+        <Link className="text-blue-600 text-xl" to="/home">
+          home/
+        </Link>
+        <Link className="text-xl" to="/about">
+          about
+        </Link>
       </div>
+    </div>
+  </div>
+
+  <div className="flex flex-col sm:flex-row justify-center items-center mt-10 px-4">
+    <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
+      <img
+        className="w-full h-96 rounded-lg shadow-lg"
+        src={AImage2}
+        alt="Description of image"
+      />
+    </div>
+    <div className="w-full sm:w-[40%] bg-slate-300 p-6 sm:p-10 rounded-lg shadow-lg">
+      <h1 className="font-extrabold text-2xl mb-4">WHY CHOOSE US?</h1>
+      <p className="mb-2">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga rem
+        pariatur dicta eaque exercitationem. Hic explicabo nihil aperiam
+        labore debitis?
+      </p>
+      <p className="mb-4">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
+        voluptatibus delectus consequuntur, facilis ipsum repellat? Magnam
+        atque ullam nesciunt nostrum? Lorem ipsum dolor sit.
+      </p>
+      <Link
+        to="/contact"
+        className="bg-blue-600 text-white p-2 rounded-md mt-8 inline-block hover:bg-black"
+      >
+        CONTACT US
+      </Link>
+    </div>
+  </div>
+</div>
 
       <h1 className="flex text-center justify-center m-5 font-bold text-3xl">
         CLIENTS REVIEWS
