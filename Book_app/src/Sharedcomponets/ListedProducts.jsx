@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Product from "./products"; // Import the separated Product component
 
 const ListedProducts = () => {
   const [cart, setCart] = useState([]);
@@ -8,7 +9,7 @@ const ListedProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(6);
-  const [addedToCart, setAddedToCart] = useState({}); // Track which products are added
+  const [addedToCart, setAddedToCart] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const ListedProducts = () => {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('authToken');
           localStorage.removeItem('expirationTime');
-          navigate('/login');
+          navigate('/');
         }
       } finally {
         setLoading(false);
@@ -58,11 +59,11 @@ const ListedProducts = () => {
       console.error('No valid token found, redirecting to login.');
       localStorage.removeItem('authToken');
       localStorage.removeItem('expirationTime');
-      navigate('/');
+      navigate('/login');
       return;
     }
 
-    // Immediately update the UI to reflect the addition to the cart
+    // Update UI immediately to reflect addition to cart
     setAddedToCart((prevState) => ({
       ...prevState,
       [product._id]: true,
@@ -78,7 +79,6 @@ const ListedProducts = () => {
         }
       );
 
-      console.log(response.data);
       setCart((prevCart) => [...prevCart, response.data]);
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -86,7 +86,7 @@ const ListedProducts = () => {
         alert('Session expired. Please log in again.');
         localStorage.removeItem('authToken');
         localStorage.removeItem('expirationTime');
-        navigate('/');
+        navigate('/login');
       }
     }
   };
@@ -99,41 +99,28 @@ const ListedProducts = () => {
   if (error) return <div>Error loading products</div>;
 
   return (
-    <div>
-      <div className="mt-8">
-        <h1 className="text-2xl font-bold mb-4 text-center">LATEST PRODUCTS</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-center mx-40">
-          {products.slice(0, visibleProducts).map((product, index) => {
-            const isInCart = addedToCart[product._id] || cart.some(item => item.productId === product._id);
-            return (
-              <div key={index} className="relative border border-black p-7 rounded-lg shadow-lg">
-                <div
-                  className='relative bg-cover bg-no-repeat w-full h-96 font-bold'
-                  style={{ backgroundImage: `url(${product.image})` }}
-                >
-                  <h1 className='absolute top-2 left-2 bg-red-500 text-white p-2 rounded-md font-bold'>{product.price}/-</h1>
-                </div>
-                <div className='mt-4'>
-                  <h3 className="text-lg font-semibold mb-2 text-center">{product.name}</h3>
-                  <input type="number" defaultValue={1} name="quantity" className="border border-gray-300 rounded-md p-2 mb-2 w-full" />
-                  <button
-                    className={`${isInCart ? 'bg-green-600' : 'bg-blue-600'} text-white p-2 rounded-md w-full`}
-                    onClick={() => !isInCart && addToCart(product)}
-                    disabled={isInCart} // Prevent multiple clicks
-                  >
-                    {isInCart ? 'Already in cart' : 'Add to Cart'}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+    <div className="mt-8 px-4 sm:px-8 md:px-16 lg:px-32">
+      <h1 className="text-2xl font-bold mb-4 text-center">LATEST PRODUCTS</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products.slice(0, visibleProducts).map((product, index) => {
+          const isInCart = addedToCart[product._id] || cart.some(item => item.productId === product._id);
+          return (
+            <Product
+              key={index}
+              data={product}
+              addToCart={addToCart}
+              isAdded={isInCart}
+            />
+          );
+        })}
       </div>
 
       {visibleProducts < products.length && (
-        <div className='flex justify-center mt-10'>
-          <div className='bg-yellow-700 p-3 rounded shadow-lg hover:bg-black'>
-            <button className='font-bold text-white px-4 rounded' onClick={loadMoreProducts}>Load more</button>
+        <div className="flex justify-center mt-10">
+          <div className="bg-yellow-700 p-3 rounded shadow-lg hover:bg-black">
+            <button className="font-bold text-white px-4 rounded" onClick={loadMoreProducts}>
+              Load more
+            </button>
           </div>
         </div>
       )}

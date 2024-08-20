@@ -41,7 +41,7 @@ export const ListedShop = () => {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('authToken');
           localStorage.removeItem('expirationTime');
-          navigate('/login');
+          navigate('/');
         }
       } finally {
         setLoading(false);
