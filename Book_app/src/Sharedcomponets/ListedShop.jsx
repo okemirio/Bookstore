@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Product from './products'; 
+import Product from './products'; // Import the separated Product component
 import { useNavigate } from 'react-router-dom';
 
-export const ListedShop = () => {
+const ListedShop = () => {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,7 +60,7 @@ export const ListedShop = () => {
       console.error('No valid token found, redirecting to login.');
       localStorage.removeItem('authToken');
       localStorage.removeItem('expirationTime');
-      navigate('/');
+      navigate('/login');
       return;
     }
 
@@ -74,7 +74,6 @@ export const ListedShop = () => {
         }
       );
 
-      console.log(response);
       setCart((prevCart) => [...prevCart, response.data]);
 
       // Immediately update the UI to reflect the addition to the cart
@@ -88,7 +87,7 @@ export const ListedShop = () => {
         alert('Session expired. Please log in again.');
         localStorage.removeItem('authToken');
         localStorage.removeItem('expirationTime');
-        navigate('/');
+        navigate('/login');
       }
     }
   };
@@ -101,31 +100,27 @@ export const ListedShop = () => {
   if (error) return <div>Error loading products</div>;
 
   return (
-    <div>
-      <div className="mt-8">
-        <h1 className="text-2xl font-bold mb-4 text-center">LATEST PRODUCTS</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-center mx-40">
-          {products.slice(0, visibleProducts).map((product, index) => (
-            <Product
-              key={index}
-              data={product}
-              addToCart={addToCart}
-              isAdded={!!addedToCart[product._id]}
-            />
-          ))}
-        </div>
+    <div className="mt-8 px-4 sm:px-8 md:px-16 lg:px-32">
+      <h1 className="text-2xl font-bold mb-4 text-center">LATEST PRODUCTS</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products.slice(0, visibleProducts).map((product) => (
+          <Product
+            key={product._id}
+            data={product}
+            addToCart={addToCart}
+            isAdded={!!addedToCart[product._id]}
+          />
+        ))}
       </div>
 
       {visibleProducts < products.length && (
         <div className="flex justify-center mt-10">
-          <div className="bg-yellow-700 p-3 rounded shadow-lg hover:bg-black">
-            <button 
-              className="font-bold text-white px-4 rounded" 
-              onClick={loadMoreProducts}
-            >
-              Load more
-            </button>
-          </div>
+          <button 
+            className="bg-yellow-700 p-3 rounded shadow-lg hover:bg-black text-white font-bold px-4"
+            onClick={loadMoreProducts}
+          >
+            Load more
+          </button>
         </div>
       )}
     </div>
