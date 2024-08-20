@@ -54,7 +54,7 @@ const ListedCart = () => {
           alert("Session expired. Please log in again.");
           localStorage.removeItem("authToken");
           localStorage.removeItem("expirationTime");
-          navigate("/login");
+          navigate("/");
         }
       } finally {
         setIsLoading(false);
