@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Sharedcomponets/Header";
 import Aimage1 from "../../public/images/heading-bg.webp";
 import { Link } from "react-router-dom";
 import Footer from "../Sharedcomponets/Footer";
+import axios from "axios"; // Import axios for making API requests
 
 const Search = () => {
+  // State to hold the search input
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // State to hold the search results
+  const [products, setProducts] = useState([]);
+
+  // Handle search input change
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Handle search button click
+    const handleSearch = async () => {
+      try {
+        // Send the search query to your backend API
+        const response = await axios.get(`https://bookstore-alpha-silk.vercel.app/products/products/search?name=${searchTerm}`);        // Update the products state with the search results
+        setProducts(response.data);
+      } catch (err) {
+        console.error("Failed to search products:", err);
+      }
+    };
+
   return (
-<div className="flex flex-col min-h-screen">
-       <Header />
+    <div className="flex flex-col min-h-screen">
+      <Header />
       <div className="relative w-full mt-28">
         <div
           className="bg-cover bg-no-repeat w-full h-64"
@@ -36,15 +59,34 @@ const Search = () => {
               type="text"
               placeholder="Search products..."
               className="w-full outline-none border-none"
+              value={searchTerm} // Bind the input to searchTerm state
+              onChange={handleInputChange} // Update searchTerm on input change
             />
           </div>
-          <button className="bg-blue-600 text-white px-4 py-2 border rounded">
+          <button
+            className="bg-blue-600 text-white px-4 py-2 border rounded"
+            onClick={handleSearch} // Trigger the search on button click
+          >
             Search
           </button>
         </div>
-        <button className="bg-white border border-gray-300 px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white font-bold mt-4">
-          Search Something
-        </button>
+      </div>
+
+      {/* Render search results */}
+      <div className="flex flex-col items-center px-4">
+        {products.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {products.map((product) => (
+              <div key={product._id} className="border p-4 rounded shadow">
+                <img src={product.image} alt={product.name} className="w-full h-40 object-cover" />
+                <h3 className="text-lg font-bold mt-2">{product.name}</h3>
+                <p className="text-gray-600 mt-1">${product.price}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No products found.</p>
+        )}
       </div>
 
       <Footer />

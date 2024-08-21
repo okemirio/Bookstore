@@ -60,7 +60,7 @@ const ListedShop = () => {
       console.error('No valid token found, redirecting to login.');
       localStorage.removeItem('authToken');
       localStorage.removeItem('expirationTime');
-      navigate('/login');
+      navigate('/');
       return;
     }
 
