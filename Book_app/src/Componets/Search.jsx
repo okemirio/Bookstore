@@ -1,32 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Header from "../Sharedcomponets/Header";
 import Aimage1 from "../../public/images/heading-bg.webp";
 import { Link } from "react-router-dom";
 import Footer from "../Sharedcomponets/Footer";
-import axios from "axios"; // Import axios for making API requests
+import Product from "../Sharedcomponets/products"; // Import the separated Product component
 
 const Search = () => {
-  // State to hold the search input
   const [searchTerm, setSearchTerm] = useState("");
-
-  // State to hold the search results
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState(6);
+  const [addedToCart, setAddedToCart] = useState({});
+  const navigate = useNavigate();
 
-  // Handle search input change
-  const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleSearch = async () => {
+    const token = localStorage.getItem('authToken');
+    const expirationTime = localStorage.getItem('expirationTime');
+    const currentTime = new Date().getTime();
+
+    if (!token || currentTime > expirationTime) {
+        console.error('No valid token found, redirecting to login.');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('expirationTime');
+        navigate('/');
+        return;
+    }
+
+    if (!searchTerm.trim()) {
+        setError('Search term cannot be empty.');
+        return;
+    }
+
+    setLoading(true);
+ console.log(searchTerm)
+    try {
+        const response = await axios.get(
+            `https://bookkapp-backend.vercel.app/products/products/search/${encodeURIComponent(searchTerm)}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        console.log(response);
+        setProducts(response.data.products);
+        setError('');
+    } catch (err) {
+        console.error('Failed to search products:', err);
+        if (err.response && err.response.data && err.response.data.error) {
+            setError(err.response.data.error);
+        } else if (err.response && err.response.status === 404) {
+            setError('No products found for the search term.');
+        } else {
+            setError('Failed to search products. Please try again.');
+        }
+        setProducts([]);
+    } finally {
+        setLoading(false);
+    }
+};
+
+  const addToCart = async (product) => {
+    const token = localStorage.getItem('authToken');
+    const expirationTime = localStorage.getItem('expirationTime');
+    const currentTime = new Date().getTime();
+
+    if (!token || currentTime > expirationTime) {
+      console.error('No valid token found, redirecting to login.');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('expirationTime');
+      navigate('/');
+      return;
+    }
+
+    setAddedToCart((prevState) => ({
+      ...prevState,
+      [product._id]: true,
+    }));
+
+    try {
+      const response = await axios.post(
+        'https://bookkapp-backend.vercel.app/carts/cart/add',
+        { productId: product._id, quantity: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Optional: handle cart update UI or logic
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      if (error.response && error.response.status === 401) {
+        alert('Session expired. Please log in again.');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('expirationTime');
+        navigate('/');
+      }
+    }
   };
 
-  // Handle search button click
-    const handleSearch = async () => {
-      try {
-        // Send the search query to your backend API
-        const response = await axios.get(`https://bookstore-alpha-silk.vercel.app/products/products/search?name=${searchTerm}`);        // Update the products state with the search results
-        setProducts(response.data);
-      } catch (err) {
-        console.error("Failed to search products:", err);
-      }
-    };
+  const loadMoreProducts = () => {
+    setVisibleProducts(prevVisibleProducts => prevVisibleProducts + 6);
+  };
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch();
+    }
+  }, [searchTerm]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -59,34 +144,50 @@ const Search = () => {
               type="text"
               placeholder="Search products..."
               className="w-full outline-none border-none"
-              value={searchTerm} // Bind the input to searchTerm state
-              onChange={handleInputChange} // Update searchTerm on input change
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <button
             className="bg-blue-600 text-white px-4 py-2 border rounded"
-            onClick={handleSearch} // Trigger the search on button click
+            onClick={handleSearch}
           >
             Search
           </button>
         </div>
-      </div>
+        {loading && <div>Loading...</div>}
+        {error && <p className="text-red-600 mt-4">{error}</p>}
 
-      {/* Render search results */}
-      <div className="flex flex-col items-center px-4">
-        {products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {products.map((product) => (
-              <div key={product._id} className="border p-4 rounded shadow">
-                <img src={product.image} alt={product.name} className="w-full h-40 object-cover" />
-                <h3 className="text-lg font-bold mt-2">{product.name}</h3>
-                <p className="text-gray-600 mt-1">${product.price}</p>
+        <div className="mt-6">
+          {products.length > 0 ? (
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {products.slice(0, visibleProducts).map((product) => {
+                  const isInCart = addedToCart[product._id];
+                  return (
+                    <Product
+                      key={product._id}
+                      data={product}
+                      addToCart={addToCart}
+                      isAdded={isInCart}
+                    />
+                  );
+                })}
               </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500">No products found.</p>
-        )}
+              {visibleProducts < products.length && (
+                <div className="flex justify-center mt-10">
+                  <div className="bg-yellow-700 p-3 rounded shadow-lg hover:bg-black">
+                    <button className="font-bold text-white px-4 rounded" onClick={loadMoreProducts}>
+                      Load more
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p>No products found.</p>
+          )}
+        </div>
       </div>
 
       <Footer />

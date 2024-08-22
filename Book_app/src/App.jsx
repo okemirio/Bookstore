@@ -6,7 +6,6 @@ import Register from './Componets/Register';
 import Home from './Componets/Home';
 import About from './Componets/About';
 import { useSelector, useDispatch } from 'react-redux';
-import { all_products } from './constant';
 import { useEffect } from 'react';
 import { post_product } from './app/Features/product/product';
 import Shop from './Componets/Shop'
@@ -25,21 +24,7 @@ import Messages from './Adim/Messages';
 
 const App = () => {
   
-    //grab data from redux
-    const all_data_from_redux = useSelector(function (state) {
-      return state.productStoreReducer;
-    });
-    const dispatch = useDispatch();
-    console.log(all_data_from_redux);
-    const products = all_data_from_redux
-    console.log(products);
   
-    //immediately the app component renders, i want store those data in the redux store
-    useEffect(function () {
-      dispatch(post_product(all_products));
-    },[]); //empty bbracket - or dpeendency - indicate one time call
-  
-    
     
   return (
     <React.Fragment>
