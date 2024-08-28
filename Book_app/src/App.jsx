@@ -19,6 +19,8 @@ import Product from './Adim/Product';
 import Orders from './Adim/Orders';
 import User from './Adim/User';
 import Messages from './Adim/Messages';
+import PaymentResult from './OrderComponets/PaymentResult';
+import PaymentCallback from './OrderComponets/PaymentCallback';
 
 
 
@@ -30,6 +32,8 @@ const App = () => {
     <React.Fragment>
       <BrowserRouter>
         <Routes>
+        <Route path="/payment-result" element={<PaymentResult />} />
+        <Route path="/payment-callback" element={<PaymentCallback />} />
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path='/home' element={<Home/>} />

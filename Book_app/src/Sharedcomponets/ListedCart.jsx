@@ -145,11 +145,11 @@ const ListedCart = () => {
         PRODUCTS ADDED
       </h1>
 
-      {error && <div className="text-center text-red-500">{error}</div>}
+      {error && <div className="text-center text-red-500 mb-4">{error}</div>}
 
       {items.length === 0 ? (
         <div className="text-center">
-          <h2 className="border border-black p-2 mx-96 my-10 text-red-400 text-center font-bold">
+          <h2 className="border border-black p-2 mx-4 sm:mx-10 md:mx-20 lg:mx-28 my-10 text-red-400 text-center font-bold">
             Your cart is empty
           </h2>
         </div>
@@ -167,23 +167,23 @@ const ListedCart = () => {
         </div>
       )}
 
-      <div className="border border-black my-6 py-4 mx-28">
+      <div className="border border-black my-6 py-4 mx-4 sm:mx-10 md:mx-20 lg:mx-28">
         <div className="flex flex-col items-center m-4">
           <h1 className="text-2xl font-bold">
             Grand Total: <span className="text-red-500">${subtotal.toFixed(2)}</span>
           </h1>
-          <div className="flex gap-2 m-3">
+          <div className="flex flex-col sm:flex-row gap-2 m-3">
             <Link to="/">
-              <button className="bg-orange-400 p-1 rounded">Continue Shopping</button>
+              <button className="bg-orange-400 p-2 rounded text-white hover:bg-orange-500">Continue Shopping</button>
             </Link>
             <Link to="/checkout">
-              <button className="bg-blue-600 p-1 rounded">Proceed to Checkout</button>
+              <button className="bg-blue-600 p-2 rounded text-white hover:bg-blue-700">Proceed to Checkout</button>
             </Link>
           </div>
           {items.length > 0 && (
             <button
               onClick={handleDeleteAll}
-              className="bg-black p-2 rounded text-white hover:bg-blue-600 mt-4"
+              className="bg-black p-2 rounded text-white hover:bg-gray-800 mt-4"
             >
               Delete All
             </button>
