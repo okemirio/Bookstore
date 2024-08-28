@@ -24,9 +24,9 @@ const IconBank = () => (
 );
 
 // Card images
-import mastercardImg from '../../dist/assets/mastercard.png';
-import visaImg from '../../dist/assets/visa.png';
-import verveImg from '../../dist/assets/verve.png';
+import mastercardImg from '../../public/images/mastercard.png';
+import visaImg from '../../public/images/visa.png';
+import verveImg from '../../public/images/verve.png';
 
 const PaymentSelector = ({ paymentDetails, setPaymentDetails, handleCheckout }) => {
   const [paymentMethod, setPaymentMethod] = useState('card');
