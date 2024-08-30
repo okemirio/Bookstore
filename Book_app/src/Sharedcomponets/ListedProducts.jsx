@@ -12,26 +12,56 @@ const ListedProducts = () => {
   const [addedToCart, setAddedToCart] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const token = localStorage.getItem('authToken');
-      const expirationTime = localStorage.getItem('expirationTime');
-      const currentTime = new Date().getTime();
-
-      if (!token || currentTime > expirationTime) {
-        console.error('No valid token found, redirecting to login.');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('expirationTime');
-        navigate('/');
-        return;
+  // Function to refresh tokens
+  const refreshTokens = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (!refreshToken) {
+        throw new Error('No refresh token found');
       }
 
+      const response = await axios.post('https://bookkapp-backend.vercel.app/auth/refresh', { refreshToken });
+      const { accessToken, refreshToken: newRefreshToken, expiresIn } = response.data;
+
+      // Save new tokens and expiration time
+      localStorage.setItem('authToken', accessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
+      localStorage.setItem('expirationTime', new Date().getTime() + expiresIn * 1000);
+      return accessToken;
+    } catch (error) {
+      console.error('Error refreshing tokens:', error);
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('expirationTime');
+      navigate('/');
+      throw error;
+    }
+  };
+
+  // Function to handle API requests
+  const apiRequest = async (url, method = 'GET', data = null) => {
+    const token = localStorage.getItem('authToken');
+    const expirationTime = localStorage.getItem('expirationTime');
+    const currentTime = new Date().getTime();
+
+    if (!token || currentTime > expirationTime) {
+      console.error('Token expired or not found. Refreshing...');
       try {
-        const response = await axios.get('https://bookkapp-backend.vercel.app/products/products', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const newToken = await refreshTokens();
+        return await axios({ url, method, data, headers: { Authorization: `Bearer ${newToken}` } });
+      } catch (error) {
+        console.error('Failed to refresh token:', error);
+        throw error;
+      }
+    }
+
+    return await axios({ url, method, data, headers: { Authorization: `Bearer ${token}` } });
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await apiRequest('https://bookkapp-backend.vercel.app/products/products');
         setProducts(response.data);
         console.log(response.data);
       } catch (error) {
@@ -40,6 +70,7 @@ const ListedProducts = () => {
         if (error.response && error.response.status === 401) {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('authToken');
+          localStorage.removeItem('refreshToken');
           localStorage.removeItem('expirationTime');
           navigate('/');
         }
@@ -52,18 +83,6 @@ const ListedProducts = () => {
   }, [navigate]);
 
   const addToCart = async (product) => {
-    const token = localStorage.getItem('authToken');
-    const expirationTime = localStorage.getItem('expirationTime');
-    const currentTime = new Date().getTime();
-
-    if (!token || currentTime > expirationTime) {
-      console.error('No valid token found, redirecting to login.');
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('expirationTime');
-      navigate('/');
-      return;
-    }
-
     // Update UI immediately to reflect addition to cart
     setAddedToCart((prevState) => ({
       ...prevState,
@@ -71,21 +90,14 @@ const ListedProducts = () => {
     }));
 
     try {
-      const response = await axios.post('https://bookkapp-backend.vercel.app/carts/cart/add',
-        { productId: product._id, quantity: 1 },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        }
-      );
-
+      const response = await apiRequest('https://bookkapp-backend.vercel.app/carts/cart/add', 'POST', { productId: product._id, quantity: 1 });
       setCart((prevCart) => [...prevCart, response.data]);
     } catch (error) {
       console.error('Error adding to cart:', error);
       if (error.response && error.response.status === 401) {
         alert('Session expired. Please log in again.');
         localStorage.removeItem('authToken');
+        localStorage.removeItem('refreshToken');
         localStorage.removeItem('expirationTime');
         navigate('/');
       }

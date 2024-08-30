@@ -3,81 +3,100 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
+  // State for storing form input values
   const [post, setPost] = useState({
     email: "",
     password: "",
   });
+  
+  // State for storing error and success messages
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Hook for programmatic navigation
   const navigate = useNavigate();
 
+  // Handle input changes in the form
   const handleChange = (event) => {
     setPost({ ...post, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    
-    axios
-      .post("https://bookkapp-backend.vercel.app/auth/login", post)
-      .then((response) => {
-        const { token, expiresIn } = response.data;
-
-        // Store the token and its expiration time in localStorage
-        const expirationTime = new Date().getTime() + expiresIn * 1000;
-        console.log(typeof expiresIn); // Should be 'number'
-
-        localStorage.setItem("authToken", token);
-        localStorage.setItem("expirationTime", expirationTime);
-
-        setSuccessMessage("Login successful!");
-        setErrorMessage("");
-
-        // Using alert for immediate feedback
-        alert("Login successful!");
-
-        // Navigate to home page upon successful login
-        setTimeout(() => {
-          setSuccessMessage("");
-          navigate("/home");
-        }, 1000);
-      })
-      .catch((error) => {
-        setErrorMessage("Login failed. Invalid email or password.");
-        setSuccessMessage("");
-
-        // Using alert for immediate feedback
-        alert("Login failed. Please try again.");
-
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 1000);
-      });
+  // Validate form inputs
+  const validateForm = () => {
+    if (!post.email || !post.password) {
+      if (!post.email) setErrorMessage('Email is required');
+      if (!post.password) setErrorMessage('Password is required');
+      return false;
+    }
+    return true;
   };
 
+  // Handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Validate form before submission
+    if (!validateForm()) return;
+
+    try {
+      // Send login request to the backend
+      const response = await axios.post("https://bookkapp-backend.vercel.app/auth/login", post);
+      const { accessToken, refreshToken, expiresIn } = response.data;
+
+      // Calculate token expiration time
+      const expirationTime = new Date().getTime() + expiresIn * 1000;
+      
+      // Store tokens and expiration time in localStorage
+      localStorage.setItem("authToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("expirationTime", expirationTime);
+
+      // Set success message and clear any error messages
+      setSuccessMessage("Login successful!");
+      setErrorMessage("");
+
+      // Navigate to home page after successful login
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate("/home");
+      }, 1000);
+    } catch (error) {
+      // Handle login errors
+      console.error('Error during login:', error.response?.data || error);
+      
+      // Set error message based on server response or a default message
+      setErrorMessage(error.response?.data?.message || "Login failed. Invalid email or password.");
+      setSuccessMessage("");
+
+      // Clear error message after 3 seconds
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
+  };
+
+  // Check if the access token has expired
   const checkTokenExpiration = () => {
     const expirationTime = localStorage.getItem("expirationTime");
     const currentTime = new Date().getTime();
 
     if (currentTime > expirationTime) {
-      // Token has expired, log out the user
       logoutUser();
     }
   };
 
+  // Logout user and clear stored data
   const logoutUser = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("expirationTime");
     alert("Session expired. Please log in again.");
-    navigate("/"); // Redirect to the login page
+    navigate("/");
   };
 
-  // Set up an interval to check for token expiration every minute
+  // Set up interval to periodically check token expiration
   useEffect(() => {
-    const intervalId = setInterval(checkTokenExpiration, 60000); // Check every 1 minute
-
+    const intervalId = setInterval(checkTokenExpiration, 60000); // Check every minute
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 

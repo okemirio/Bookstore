@@ -64,132 +64,142 @@ const PaymentSelector = ({ paymentDetails, setPaymentDetails, handleCheckout }) 
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6">Select Payment Method</h2>
-      <div className="flex space-x-4 mb-6">
-        <button
-          className={`flex-1 flex items-center justify-center p-4 rounded-lg border ${paymentMethod === 'card' ? 'bg-blue-100' : ''}`}
-          onClick={() => setPaymentMethod('card')}
-        >
-          <IconCreditCard />
-          <span className="ml-2">Card</span>
-        </button>
-        <button
-          className={`flex-1 flex items-center justify-center p-4 rounded-lg border ${paymentMethod === 'paypal' ? 'bg-blue-100' : ''}`}
-          onClick={() => setPaymentMethod('paypal')}
-        >
-          <IconPaypal />
-          <span className="ml-2">PayPal</span>
-        </button>
-        <button
-          className={`flex-1 flex items-center justify-center p-4 rounded-lg border ${paymentMethod === 'bank' ? 'bg-blue-100' : ''}`}
-          onClick={() => setPaymentMethod('bank')}
-        >
-          <IconBank />
-          <span className="ml-2">Bank Transfer</span>
-        </button>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="mb-8 p-6 bg-gray-100 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-6">Orders</h2>
+        {/* Replace this placeholder with actual orders content */}
+        <p className="text-gray-700">Order details will appear here.</p>
       </div>
 
-      {paymentMethod === 'card' && (
-        <div>
-          <div className="mb-4">
-            <label htmlFor="cardNumber" className="block text-sm font-medium mb-1">Card Number</label>
-            <div className="flex items-center border rounded-lg p-2">
+      <div className="my-8 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div> {/* Gradient divider */}
+
+      <div className="p-6 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Select Payment Method</h2>
+        <div className="flex space-x-4 mb-6">
+          <button
+            className={`flex-1 flex items-center justify-center p-4 rounded-lg border ${paymentMethod === 'card' ? 'bg-yellow-100' : 'bg-gray-100'} hover:bg-yellow-200`}
+            onClick={() => setPaymentMethod('card')}
+          >
+            <IconCreditCard />
+            <span className="ml-2">Card</span>
+          </button>
+          <button
+            className={`flex-1 flex items-center justify-center p-4 rounded-lg border ${paymentMethod === 'paypal' ? 'bg-green-100' : 'bg-gray-100'} hover:bg-green-200`}
+            onClick={() => setPaymentMethod('paypal')}
+          >
+            <IconPaypal />
+            <span className="ml-2">PayPal</span>
+          </button>
+          <button
+            className={`flex-1 flex items-center justify-center p-4 rounded-lg border ${paymentMethod === 'bank' ? 'bg-red-100' : 'bg-gray-100'} hover:bg-red-200`}
+            onClick={() => setPaymentMethod('bank')}
+          >
+            <IconBank />
+            <span className="ml-2">Bank Transfer</span>
+          </button>
+        </div>
+
+        {paymentMethod === 'card' && (
+          <div>
+            <div className="mb-4">
+              <label htmlFor="cardNumber" className="block text-sm font-medium mb-1">Card Number</label>
+              <div className="flex items-center border rounded-lg p-2">
+                <input
+                  type="text"
+                  id="cardNumber"
+                  name="cardNumber"
+                  value={paymentDetails.cardNumber || ''}
+                  onChange={handleCardNumberChange}
+                  placeholder="1234 5678 9012 3456"
+                  className="flex-1 p-2 outline-none"
+                  autoComplete="cc-number"
+                />
+                {cardImage && (
+                  <img src={cardImage} alt={cardType} className="ml-2 w-12 h-auto" />
+                )}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="expiryDate" className="block text-sm font-medium mb-1">Expiry Date</label>
               <input
                 type="text"
-                id="cardNumber"
-                name="cardNumber"
-                value={paymentDetails.cardNumber || ''}
-                onChange={handleCardNumberChange}
-                placeholder="1234 5678 9012 3456"
-                className="flex-1 p-2 outline-none"
-                autoComplete="cc-number"
+                id="expiryDate"
+                name="expiryDate"
+                value={paymentDetails.expiryDate || ''}
+                onChange={(e) => setPaymentDetails({ ...paymentDetails, expiryDate: e.target.value })}
+                placeholder="MM/YY"
+                className="w-full p-2 border rounded-lg outline-none"
+                autoComplete="cc-exp"
               />
-              {cardImage && (
-                <img src={cardImage} alt={cardType} className="ml-2 w-12 h-auto" />
-              )}
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="cvv" className="block text-sm font-medium mb-1">CVV</label>
+              <input
+                type="text"
+                id="cvv"
+                name="cvv"
+                value={paymentDetails.cvv || ''}
+                onChange={(e) => setPaymentDetails({ ...paymentDetails, cvv: e.target.value })}
+                placeholder="123"
+                className="w-full p-2 border rounded-lg outline-none"
+                autoComplete="cc-csc"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="pin" className="block text-sm font-medium mb-1">PIN</label>
+              <input
+                type="password"
+                id="pin"
+                name="pin"
+                value={paymentDetails.pin || ''}
+                onChange={(e) => setPaymentDetails({ ...paymentDetails, pin: e.target.value })}
+                placeholder="****"
+                className="w-full p-2 border rounded-lg outline-none"
+                autoComplete="new-password"
+              />
             </div>
           </div>
+        )}
 
-          <div className="mb-4">
-            <label htmlFor="expiryDate" className="block text-sm font-medium mb-1">Expiry Date</label>
-            <input
-              type="text"
-              id="expiryDate"
-              name="expiryDate"
-              value={paymentDetails.expiryDate || ''}
-              onChange={(e) => setPaymentDetails({ ...paymentDetails, expiryDate: e.target.value })}
-              placeholder="MM/YY"
-              className="w-full p-2 border rounded-lg outline-none"
-              autoComplete="cc-exp"
-            />
+        {paymentMethod === 'paypal' && (
+          <div className="mb-4 p-4 border rounded-lg bg-blue-50">
+            <p className="text-sm">You will be redirected to PayPal to complete your purchase securely.</p>
           </div>
+        )}
 
-          <div className="mb-4">
-            <label htmlFor="cvv" className="block text-sm font-medium mb-1">CVV</label>
-            <input
-              type="text"
-              id="cvv"
-              name="cvv"
-              value={paymentDetails.cvv || ''}
-              onChange={(e) => setPaymentDetails({ ...paymentDetails, cvv: e.target.value })}
-              placeholder="123"
-              className="w-full p-2 border rounded-lg outline-none"
-              autoComplete="cc-csc"
-            />
+        {paymentMethod === 'bank' && (
+          <div>
+            <div className="mb-4 p-4 border rounded-lg bg-red-50">
+              <p className="text-sm font-medium">Bank Name: ABC Bank</p>
+              <p className="text-sm font-medium">Account Number: 1234567890</p>
+              <p className="text-sm font-medium">Sort Code: 00-00-00</p>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="bankTransferConfirmation" className="block text-sm font-medium mb-1">Transfer Confirmation Number</label>
+              <input
+                type="text"
+                id="bankTransferConfirmation"
+                name="bankTransferConfirmation"
+                value={bankTransferConfirmation || ''}
+                onChange={(e) => setBankTransferConfirmation(e.target.value)}
+                placeholder="Enter confirmation number"
+                className="w-full p-2 border rounded-lg outline-none"
+                autoComplete="off"
+              />
+            </div>
           </div>
+        )}
 
-          <div className="mb-4">
-            <label htmlFor="pin" className="block text-sm font-medium mb-1">PIN</label>
-            <input
-              type="password"
-              id="pin"
-              name="pin"
-              value={paymentDetails.pin || ''}
-              onChange={(e) => setPaymentDetails({ ...paymentDetails, pin: e.target.value })}
-              placeholder="****"
-              className="w-full p-2 border rounded-lg outline-none"
-              autoComplete="new-password"
-            />
-          </div>
-        </div>
-      )}
-
-      {paymentMethod === 'paypal' && (
-        <div className="mb-4 p-4 border rounded-lg">
-          <p className="text-sm">You will be redirected to PayPal to complete your purchase securely.</p>
-        </div>
-      )}
-
-      {paymentMethod === 'bank' && (
-        <div>
-          <div className="mb-4 p-4 border rounded-lg">
-            <p className="text-sm font-medium">Bank Name: ABC Bank</p>
-            <p className="text-sm font-medium">Account Number: 1234567890</p>
-            <p className="text-sm font-medium">Sort Code: 00-00-00</p>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="bankTransferConfirmation" className="block text-sm font-medium mb-1">Transfer Confirmation Number</label>
-            <input
-              type="text"
-              id="bankTransferConfirmation"
-              name="bankTransferConfirmation"
-              value={bankTransferConfirmation || ''}
-              onChange={(e) => setBankTransferConfirmation(e.target.value)}
-              placeholder="Enter confirmation number"
-              className="w-full p-2 border rounded-lg outline-none"
-              autoComplete="off"
-            />
-          </div>
-        </div>
-      )}
-
-      <button
-        onClick={handleCheckout}
-        className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
-      >
-        Complete Payment
-      </button>
+        <button
+          onClick={handleCheckout}
+          className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
+        >
+          Complete Payment
+        </button>
+      </div>
     </div>
   );
 };
