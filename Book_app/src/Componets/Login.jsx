@@ -3,29 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
-  // State for storing form input values
-  const [post, setPost] = useState({
-    email: "",
-    password: "",
-  });
-  
-  // State for storing error and success messages
+  // State for form inputs and messages
+  const [post, setPost] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Hook for programmatic navigation
   const navigate = useNavigate();
 
-  // Handle input changes in the form
+  // Handle input changes
   const handleChange = (event) => {
     setPost({ ...post, [event.target.name]: event.target.value });
   };
 
-  // Validate form inputs
+  // Validate input fields
   const validateForm = () => {
     if (!post.email || !post.password) {
-      if (!post.email) setErrorMessage('Email is required');
-      if (!post.password) setErrorMessage('Password is required');
+      if (!post.email) setErrorMessage("Email is required");
+      if (!post.password) setErrorMessage("Password is required");
       return false;
     }
     return true;
@@ -35,23 +29,21 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate form before submission
     if (!validateForm()) return;
 
     try {
-      // Send login request to the backend
-      const response = await axios.post("https://bookkapp-backend.vercel.app/auth/login", post);
+      const response = await axios.post(
+        "https://bookkapp-backend.vercel.app/auth/login",
+        post
+      );
       const { accessToken, refreshToken, expiresIn } = response.data;
 
-      // Calculate token expiration time
-      const expirationTime = new Date().getTime() + expiresIn * 1000;
-      
       // Store tokens and expiration time in localStorage
+      const expirationTime = new Date().getTime() + expiresIn * 1000;
       localStorage.setItem("authToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("expirationTime", expirationTime);
 
-      // Set success message and clear any error messages
       setSuccessMessage("Login successful!");
       setErrorMessage("");
 
@@ -61,11 +53,11 @@ const Login = () => {
         navigate("/home");
       }, 1000);
     } catch (error) {
-      // Handle login errors
-      console.error('Error during login:', error.response?.data || error);
-      
-      // Set error message based on server response or a default message
-      setErrorMessage(error.response?.data?.message || "Login failed. Invalid email or password.");
+      console.error("Error during login:", error.response?.data || error);
+      setErrorMessage(
+        error.response?.data?.message ||
+          "Login failed. Invalid email or password."
+      );
       setSuccessMessage("");
 
       // Clear error message after 3 seconds
@@ -75,7 +67,7 @@ const Login = () => {
     }
   };
 
-  // Check if the access token has expired
+  // Check token expiration
   const checkTokenExpiration = () => {
     const expirationTime = localStorage.getItem("expirationTime");
     const currentTime = new Date().getTime();
@@ -85,25 +77,25 @@ const Login = () => {
     }
   };
 
-  // Logout user and clear stored data
+  // Log out user
   const logoutUser = () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshToken"); // Also remove refresh token
     localStorage.removeItem("expirationTime");
     alert("Session expired. Please log in again.");
     navigate("/");
   };
 
-  // Set up interval to periodically check token expiration
+  // Set up interval to check token expiration
   useEffect(() => {
-    const intervalId = setInterval(checkTokenExpiration, 60000); // Check every minute
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+    const intervalId = setInterval(checkTokenExpiration, 60000); // Check every 1 minute
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white-600">
-      <div className="bg-white p-8 rounded shadow-lg w-96 text-center">
-        <h2 className="text-3xl font-bold mb-4 text-black-800 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-lg w-96">
+        <h2 className="text-3xl font-bold mb-4 text-gray-800 text-center">
           Login
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -111,35 +103,60 @@ const Login = () => {
             <input
               type="email"
               id="email"
-              onChange={handleChange}
               name="email"
+              onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Please enter your email"
+              autoComplete="email"
+              required
             />
           </div>
           <div>
             <input
               type="password"
               id="password"
-              onChange={handleChange}
               name="password"
+              onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Please enter your password"
+              autoComplete="current-password"
+              required
             />
+          </div>
+          <div className="flex justify-between items-center mb-4">
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="rememberMe"
+                type="checkbox"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-900"
+              >
+                Remember me
+              </label>
+            </div>
+
+            {/* Forgot Password Link */}
+            <div>
+              <Link
+                to="/request-reset"
+                className="text-sm text-blue-600 hover:text-blue-500"
+              >
+                Forgot your password?
+              </Link>
+            </div>
           </div>
           <div>
             <button
               type="submit"
-              className="w-10px bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+              className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
             >
               Login Now
             </button>
-            <Link
-              to="/admin/dashboard"
-              className="ml-4 text-blue-500 hover:text-blue-700"
-            >
-              Dashboard
-            </Link>
           </div>
         </form>
         {errorMessage && (
