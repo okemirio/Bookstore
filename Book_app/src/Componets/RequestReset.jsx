@@ -14,7 +14,7 @@ const RequestReset = () => {
     e.preventDefault();
     try {
       // Send request to backend to send reset email
-      const response = await axios.post("https://bookkapp-backend.vercel.app/auth/reset-password", { email });
+      const response = await axios.post("https://bookkapp-backend.vercel.app/auth/send-reset-link", { email });
       console.log(response)
       setMessage(response.data.message);
     } catch (error) {

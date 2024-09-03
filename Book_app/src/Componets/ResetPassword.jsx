@@ -9,26 +9,21 @@ const ResetPassword = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // Handle changes in the password inputs
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
 
-  // Handle form submission to reset the password
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Check if passwords match
+
     if (password !== confirmPassword) {
       setMessage("Passwords do not match.");
       return;
     }
 
     try {
-      // Send request to backend to reset password
-      const response = await axios.post(`https://bookkapp-backend.vercel.app/auth/reset-password/${token}`, { password });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/reset-password/${token}`, { password });
       setMessage(response.data.message);
 
-      // Redirect to login page after successful password reset
       setTimeout(() => {
         navigate("/");
       }, 2000);

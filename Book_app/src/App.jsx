@@ -29,7 +29,7 @@ const App = () => {
     <React.Fragment>
       <BrowserRouter>
         <Routes>
-          <Route path="/request-reset" element={<RequestReset />} />
+          <Route path="/send-reset-link" element={<RequestReset />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/payment-callback" element={<PaymentCallback />} />

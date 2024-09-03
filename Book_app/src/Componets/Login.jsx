@@ -143,7 +143,7 @@ const Login = () => {
             {/* Forgot Password Link */}
             <div>
               <Link
-                to="/request-reset"
+                to="/send-reset-link"
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
                 Forgot your password?
