@@ -21,6 +21,10 @@
       "dest": "/manifest.json"
     },
     {
+      "src": "/reset-password/(.*)",
+      "dest": "/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

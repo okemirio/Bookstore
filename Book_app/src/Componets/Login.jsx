@@ -3,19 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
-  // State for form inputs and messages
   const [post, setPost] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   const navigate = useNavigate();
 
-  // Handle input changes
   const handleChange = (event) => {
     setPost({ ...post, [event.target.name]: event.target.value });
   };
 
-  // Validate input fields
   const validateForm = () => {
     if (!post.email || !post.password) {
       if (!post.email) setErrorMessage("Email is required");
@@ -25,7 +22,6 @@ const Login = () => {
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -33,12 +29,11 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://bookkapp-backend.vercel.app/auth/login",
+        "https://bookkapp-backend.vercel.app/auth/",
         post
       );
       const { accessToken, refreshToken, expiresIn } = response.data;
 
-      // Store tokens and expiration time in localStorage
       const expirationTime = new Date().getTime() + expiresIn * 1000;
       localStorage.setItem("authToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
@@ -47,7 +42,6 @@ const Login = () => {
       setSuccessMessage("Login successful!");
       setErrorMessage("");
 
-      // Navigate to home page after successful login
       setTimeout(() => {
         setSuccessMessage("");
         navigate("/home");
@@ -60,14 +54,12 @@ const Login = () => {
       );
       setSuccessMessage("");
 
-      // Clear error message after 3 seconds
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
     }
   };
 
-  // Check token expiration
   const checkTokenExpiration = () => {
     const expirationTime = localStorage.getItem("expirationTime");
     const currentTime = new Date().getTime();
@@ -77,18 +69,16 @@ const Login = () => {
     }
   };
 
-  // Log out user
   const logoutUser = () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("refreshToken"); // Also remove refresh token
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("expirationTime");
     alert("Session expired. Please log in again.");
     navigate("/");
   };
 
-  // Set up interval to check token expiration
   useEffect(() => {
-    const intervalId = setInterval(checkTokenExpiration, 60000); // Check every 1 minute
+    const intervalId = setInterval(checkTokenExpiration, 60000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -124,7 +114,6 @@ const Login = () => {
             />
           </div>
           <div className="flex justify-between items-center mb-4">
-            {/* Remember Me Checkbox */}
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -139,11 +128,9 @@ const Login = () => {
                 Remember me
               </label>
             </div>
-
-            {/* Forgot Password Link */}
             <div>
               <Link
-                to="/send-reset-link"
+                to="/send-reset-code"
                 className="text-sm text-blue-600 hover:text-blue-500"
               >
                 Forgot your password?

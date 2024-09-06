@@ -29,8 +29,8 @@ const App = () => {
     <React.Fragment>
       <BrowserRouter>
         <Routes>
-          <Route path="/send-reset-link" element={<RequestReset />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/send-reset-code" element={<RequestReset />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/payment-callback" element={<PaymentCallback />} />
           <Route path="/" element={<Login />} />

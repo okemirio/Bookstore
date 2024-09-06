@@ -1,34 +1,57 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ResetPassword = () => {
-  const { token } = useParams();
+  const [resetCode, setResetCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handlePasswordChange = (e) => setPassword(e.target.value);
-  const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
+  const query = new URLSearchParams(location.search);
+  const email = query.get("email");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match.");
+      setMessage({ text: "Passwords do not match.", type: "error" });
       return;
     }
 
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/reset-password/${token}`, { password });
-      setMessage(response.data.message);
+    setIsLoading(true);
+    setMessage({ text: "", type: "" });
 
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+    try {
+      const response = await axios.post("https://bookkapp-backend.vercel.app/auth/reset-password", {
+        email,
+        code: resetCode,
+        newPassword: password,
+      });
+      
+      console.log(response);
+      console.log(response.data);
+      
+      if (response.data.success) {
+        setMessage({ text: "Password reset successfully. Redirecting to login...", type: "success" });
+        setTimeout(() => navigate("/"), 3000);
+      } else {
+        setMessage({ text: response.data.message || "Error resetting password.", type: "error" });
+      }
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error resetting password.");
+      console.error("Password reset error:", error);
+      if (error.response) {
+        setMessage({ text: error.response.data.message || "Error resetting password.", type: "error" });
+      } else if (error.request) {
+        setMessage({ text: "No response received from server. Please try again.", type: "error" });
+      } else {
+        setMessage({ text: "Error resetting password. Please try again.", type: "error" });
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,35 +61,61 @@ const ResetPassword = () => {
         <h2 className="text-3xl font-bold mb-4 text-center">Reset Password</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
+            <label htmlFor="code-reset" className="block text-sm font-medium text-gray-700">Reset Code</label>
+            <input
+              type="text"
+              id="code-reset"
+              value={resetCode}
+              onChange={(e) => setResetCode(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              placeholder="Enter the reset code sent to your email"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password-new" className="block text-sm font-medium text-gray-700">New Password</label>
             <input
               type="password"
-              onChange={handlePasswordChange}
+              id="password-new"
               value={password}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Enter new password"
               required
+              minLength={8}
             />
           </div>
+
           <div>
+            <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">Confirm Password</label>
             <input
               type="password"
-              onChange={handleConfirmPasswordChange}
+              id="confirm-password"
               value={confirmPassword}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Confirm new password"
               required
+              minLength={8}
             />
           </div>
+
           <div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md"
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              disabled={isLoading || !resetCode || !password || !confirmPassword}
             >
-              Reset Password
+              {isLoading ? "Resetting..." : "Reset Password"}
             </button>
           </div>
         </form>
-        {message && <p className="mt-4 text-sm text-center text-red-500">{message}</p>}
+        {message.text && (
+          <p className={`mt-4 text-sm text-center ${message.type === "success" ? "text-green-600" : "text-red-600"}`}>
+            {message.text}
+          </p>
+        )}
       </div>
     </div>
   );
