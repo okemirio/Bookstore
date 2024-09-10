@@ -85,7 +85,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center bg-gray-50">
       {/* Image Section */}
-      <div className="hidden lg:flex lg:w-1/2 h-[650px] bg-cover bg-center relative">
+      <div className="hidden lg:flex lg:w-1/2 h-[650px] bg-cover bg-center relative ">
         <img
           src="https://images.unsplash.com/photo-1510172951991-856a654063f9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Ym9va3MlMjB3YWxscGFwZXJ8ZW58MHx8MHx8fDA%3D"
           alt="Login Illustration"

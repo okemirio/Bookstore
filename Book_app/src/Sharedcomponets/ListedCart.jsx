@@ -173,7 +173,7 @@ const ListedCart = () => {
             Grand Total: <span className="text-red-500">${subtotal.toFixed(2)}</span>
           </h1>
           <div className="flex flex-col sm:flex-row gap-2 m-3">
-            <Link to="/">
+            <Link to="/shop">
               <button className="bg-orange-400 p-2 rounded text-white hover:bg-orange-500">Continue Shopping</button>
             </Link>
             <Link to="/checkout">
